@@ -1,0 +1,6 @@
+# modify model files
+python manage.py makemigrations
+python manage.py migrate
+
+# run dev server
+python manage.py runserver 8081

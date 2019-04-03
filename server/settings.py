@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'api.apps.ApiConfig',
+    'user_app.apps.UserAppConfig',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -63,7 +63,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'server/templates'),
-            os.path.join(BASE_DIR, 'api/templates'),
+            os.path.join(BASE_DIR, 'user_app/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

@@ -12,7 +12,7 @@ import requests
 from django.conf import settings
 from rest_framework import viewsets
 from rest_framework.response import Response
-from api.serializers import UserSerializer, GroupSerializer
+from user_app.serializers import UserSerializer, GroupSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated

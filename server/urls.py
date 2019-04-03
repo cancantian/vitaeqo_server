@@ -18,15 +18,15 @@ from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
 
 from rest_framework import routers
-from api import views as api_Views
+from user_app import views as user_app_Views
 
 router = routers.DefaultRouter()
-router.register(r'users', api_Views.UserViewSet)
-router.register(r'groups', api_Views.GroupViewSet)
+router.register(r'users', user_app_Views.UserViewSet)
+router.register(r'groups', user_app_Views.GroupViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
+    path('api/user_app/', include('user_app.urls')),
     path('test/', include(router.urls)),
     path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),

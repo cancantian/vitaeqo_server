@@ -56,13 +56,13 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
-ROOT_URLCONF = 'wechatapi.urls'
+ROOT_URLCONF = 'server.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'wechatapi/templates'),
+            os.path.join(BASE_DIR, 'server/templates'),
             os.path.join(BASE_DIR, 'api/templates'),
         ],
         'APP_DIRS': True,
@@ -77,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'wechatapi.wsgi.application'
+WSGI_APPLICATION = 'server.wsgi.application'
 
 
 # Database

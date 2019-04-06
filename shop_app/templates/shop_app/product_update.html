@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<img src="{{object.img}}" width="120" height="90" />
+
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update">
+    <a class="btn btn-default" href="{% url 'shop_app:product_list'%}">Cancel</a>
+</form>
+
+{% endblock %}

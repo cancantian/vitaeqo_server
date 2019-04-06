@@ -1,4 +1,6 @@
 from django.db import models
+import os
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -46,3 +48,12 @@ class Product(models.Model):
     price = models.FloatField(null=False)
     available = models.BooleanField(default=False)
     img = models.CharField(max_length=200, null=False)
+
+    @receiver(models.signals.post_delete)
+    def delete_img(sender, instance, *args, **kwargs):
+        """ Deletes img files on `post_delete` """
+        if instance.img:
+            all_imgs = os.listdir(settings.MEDIA_ROOT)
+            img_filename = next(fn for fn in all_imgs if fn in instance.img)
+            img_abs_path = os.path.join(settings.MEDIA_ROOT, img_filename)
+            os.remove(img_abs_path)

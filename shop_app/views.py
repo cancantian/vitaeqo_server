@@ -44,3 +44,15 @@ def new_product(request):
     else:
         form = ProductForm()
     return render(request, 'shop_app/product_form.html', {'form': form})
+
+class DeleteProduct(DeleteView):
+    model = Product
+    template_name = 'shop_app/product_delete.html'
+    success_url = reverse_lazy('shop_app:product_list')
+
+
+class UpdateProduct(UpdateView):
+    model = Product
+    fields = ['name','price', 'available']
+    template_name = 'shop_app/product_update.html'
+    success_url = reverse_lazy('shop_app:product_list')

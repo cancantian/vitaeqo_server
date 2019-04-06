@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method="post">{% csrf_token %}
+    <p class="alert alert-danger">Are you sure you want to delete "{{ object.name }}"?</p>
+    <input class="btn btn-danger" type="submit" value="Confirm" />
+    <a class="btn btn-default" href="{% url 'shop_app:product_list'%}">No, Cancel</a>
+</form>
+
+{% endblock %}

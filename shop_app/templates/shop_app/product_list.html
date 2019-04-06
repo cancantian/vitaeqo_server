@@ -11,14 +11,19 @@
           <th>Name</th>
           <th>Price</th>
           <th>Pic</th>
+          <th>Availability</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {% for prod in products %}
             <tr>
-              <td>{{ prod.name }}</a></td>
+              <td>{{ prod.name }}</td>
               <td>{{ prod.price }}</td>
               <td><img src="{{prod.img}}" width="120" height="90" /></td>
+              <td>{{ prod.available }}</td>
+              <td><a href="{% url 'shop_app:delete_product' prod.id %}">Delete</a></td>
+              <td><a href="{% url 'shop_app:update_product' prod.id %}">Edit</a></td>
             </tr>
         {% endfor %}
       </tbody>

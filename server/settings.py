@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'user_app.apps.UserAppConfig',
+    'shop_app.apps.ShopAppConfig',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -64,6 +65,7 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(BASE_DIR, 'server/templates'),
             os.path.join(BASE_DIR, 'user_app/templates'),
+            os.path.join(BASE_DIR, 'shop_app/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -148,3 +150,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+IMG_ROOT = os.path.join(BASE_DIR, 'image')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'image')
+MEDIA_URL = '/image/'

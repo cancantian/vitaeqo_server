@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 from rest_framework import routers
 from user_app import views as user_app_Views
@@ -27,7 +29,8 @@ router.register(r'groups', user_app_Views.GroupViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/user_app/', include('user_app.urls')),
+    path('api/shop_app/', include('shop_app.urls')),
     path('test/', include(router.urls)),
     path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -29,7 +29,7 @@ router.register(r'groups', user_app_Views.GroupViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/user_app/', include('user_app.urls')),
-    path('api/shop_app/', include('shop_app.urls')),
+    path('shop/', include('shop_app.urls')),
     path('test/', include(router.urls)),
     path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),

@@ -11,9 +11,9 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from .models import Product
-from .forms import ProductForm
-from .helper import handle_uploaded_file
+from shop_app.models import Product
+from shop_app.forms import ProductForm
+from shop_app.helper import handle_uploaded_file
 
 
 def product_list(request):
@@ -44,6 +44,7 @@ def new_product(request):
     else:
         form = ProductForm()
     return render(request, 'shop_app/product_form.html', {'form': form})
+
 
 class DeleteProduct(DeleteView):
     model = Product

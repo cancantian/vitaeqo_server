@@ -4,3 +4,10 @@ python manage.py migrate
 
 # run dev server
 python manage.py runserver 8081
+
+#how to reset dev sqlite db if you mess up the migrations
+rm -rf all migrations folder under each app
+rm db.sqlite3 file
+python manage.py migrate --fake-initial
+python manage.py makemigrations xxx_app (run this for each app)
+python migrate

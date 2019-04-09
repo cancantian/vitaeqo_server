@@ -4,6 +4,8 @@ from .views import html_views, api_views
 app_name = 'shop_app'
 router = routers.DefaultRouter()
 router.register(r'products', api_views.ProductViewSet)
+router.register(r'order_items', api_views.OrderItemViewSet)
+router.register(r'orders', api_views.OrderViewSet)
 urlpatterns = [
     url(r'^$', html_views.product_list, name='product_list'),
     url(r'^api/', include(router.urls)),

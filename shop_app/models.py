@@ -24,6 +24,7 @@ class Order(models.Model):
 		if created:
 			Order.objects.create(user=instance, status='New')
 
+
 class Product(models.Model):
 	name = models.CharField(max_length=200, null=False)
 	price = models.FloatField(null=False)
@@ -39,8 +40,9 @@ class Product(models.Model):
 			img_abs_path = os.path.join(settings.MEDIA_ROOT, img_filename)
 			os.remove(img_abs_path)
 
+
 class OrderItem(models.Model):
-	order = models.ForeignKey(Order, on_delete=models.CASCADE)
+	order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	count = models.PositiveIntegerField()
 

@@ -6,6 +6,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.views.generic import CreateView, DeleteView, UpdateView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.template import loader
 from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate
@@ -16,6 +18,12 @@ from shop_app.forms import ProductForm
 from shop_app.helper import handle_uploaded_file
 
 
+@staff_member_required
+def dashboard(request):
+    return render(request, 'shop_app/dashboard.html', {'user': request.user})
+
+
+@staff_member_required
 def product_list(request):
     prod_list = Product.objects.order_by('-id').all()
     paginator = Paginator(prod_list, 5)
@@ -29,6 +37,7 @@ def product_list(request):
     return render(request, 'shop_app/product_list.html', {'products': products})
 
 
+@staff_member_required
 def new_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
@@ -46,13 +55,15 @@ def new_product(request):
     return render(request, 'shop_app/product_form.html', {'form': form})
 
 
-class DeleteProduct(DeleteView):
+class DeleteProduct(PermissionRequiredMixin, DeleteView):
+    permission_required = 'is_staff'
     model = Product
     template_name = 'shop_app/product_delete.html'
     success_url = reverse_lazy('shop_app:product_list')
 
 
-class UpdateProduct(UpdateView):
+class UpdateProduct(PermissionRequiredMixin, UpdateView):
+    permission_required = 'is_staff'
     model = Product
     fields = ['name','price', 'available']
     template_name = 'shop_app/product_update.html'

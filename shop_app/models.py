@@ -8,52 +8,40 @@ from enum import Enum
 # Create your models here.
 
 
-class Status(Enum):
-    Paid = "Paid"
-    Shipping = "Shipping"
-    Shipped = "Shipped"
+class Order(models.Model):
+	ORDER_STATUS = (
+		('New', 'New'),
+		('Paid', 'Paid'),
+		('Shipping', 'Shipping'),
+		('Shipped', 'Shipped'),
+		('Closed', 'Closed'),
+	)
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	status = models.CharField(max_length=10, choices=ORDER_STATUS, default='New',)
 
-
-class Cart(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    products = models.ManyToManyField('Product')
-
-    @classmethod
-    def create(cls):
-        cart = cls()
-        cart.save()
-        return cart
-
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Cart.objects.create(user=instance, openid=instance.username)
-
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.cart.save()
-
-
-class History(models.Model):
-    reporter = models.ForeignKey(User, on_delete=models.CASCADE)
-    products = models.ManyToManyField('Product')
-    status = models.CharField(
-      max_length=10,
-      choices=[(Status, Status.value) for Status in Status]
-    )
-
+	@receiver(post_save, sender=User)
+	def create_order(sender, instance, created, **kwargs):
+		if created:
+			Order.objects.create(user=instance, status='New')
 
 class Product(models.Model):
-    name = models.CharField(max_length=200, null=False)
-    price = models.FloatField(null=False)
-    available = models.BooleanField(default=False)
-    img = models.CharField(max_length=200, null=False)
+	name = models.CharField(max_length=200, null=False)
+	price = models.FloatField(null=False)
+	available = models.BooleanField(default=False)
+	img = models.CharField(max_length=200, null=False)
 
-    @receiver(models.signals.post_delete)
-    def delete_img(sender, instance, *args, **kwargs):
-        """ Deletes img files on `post_delete` """
-        if instance.img:
-            all_imgs = os.listdir(settings.MEDIA_ROOT)
-            img_filename = next(fn for fn in all_imgs if fn in instance.img)
-            img_abs_path = os.path.join(settings.MEDIA_ROOT, img_filename)
-            os.remove(img_abs_path)
+	@receiver(models.signals.post_delete)
+	def delete_img(sender, instance, *args, **kwargs):
+		""" Deletes img files on `post_delete` """
+		if instance.img:
+			all_imgs = os.listdir(settings.MEDIA_ROOT)
+			img_filename = next(fn for fn in all_imgs if fn in instance.img)
+			img_abs_path = os.path.join(settings.MEDIA_ROOT, img_filename)
+			os.remove(img_abs_path)
+
+class OrderItem(models.Model):
+	order = models.ForeignKey(Order, on_delete=models.CASCADE)
+	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+	count = models.PositiveIntegerField()
+
+

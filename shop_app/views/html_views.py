@@ -13,9 +13,10 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from shop_app.models import Product
+from shop_app.models import Product, Order
 from shop_app.forms import ProductForm
 from shop_app.helper import handle_uploaded_file
+from utils.tx_cloud.bucket import TXBucket
 
 
 @staff_member_required
@@ -44,15 +45,28 @@ def new_product(request):
         if form.is_valid():
             new_prod = form.save(commit=False)
             filename = str(uuid.uuid4())
-            filepath = os.path.join(settings.IMG_ROOT, filename)
-            rel_filepath = os.path.join(settings.MEDIA_URL, filename)
-            handle_uploaded_file(request.FILES['img'], filepath)
-            new_prod.img = rel_filepath
+            txb = TXBucket()
+            url = txb.upload_img(fp=request.FILES['img'], bucket_file_name=filename)
+            new_prod.img = url
             new_prod.save()
             return redirect('shop_app:product_list')
     else:
         form = ProductForm()
     return render(request, 'shop_app/product_form.html', {'form': form})
+
+
+@staff_member_required
+def order_list(request):
+    all_orders = Order.objects.order_by('-id').all()
+    paginator = Paginator(all_orders, 5)
+    page = request.GET.get('page')
+    try:
+        orders = paginator.page(page)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except EmptyPage:
+        orders = paginator.page(paginator.num_pages)
+    return render(request, 'shop_app/order_list.html', {'orders': orders})
 
 
 class DeleteProduct(PermissionRequiredMixin, DeleteView):

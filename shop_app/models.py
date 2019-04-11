@@ -31,15 +31,6 @@ class Product(models.Model):
 	available = models.BooleanField(default=False)
 	img = models.CharField(max_length=200, null=False)
 
-	@receiver(models.signals.post_delete)
-	def delete_img(sender, instance, *args, **kwargs):
-		""" Deletes img files on `post_delete` """
-		if instance.img:
-			all_imgs = os.listdir(settings.MEDIA_ROOT)
-			img_filename = next(fn for fn in all_imgs if fn in instance.img)
-			img_abs_path = os.path.join(settings.MEDIA_ROOT, img_filename)
-			os.remove(img_abs_path)
-
 
 class OrderItem(models.Model):
 	order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')

@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^product/new$', html_views.new_product, name='new_product'),
     url(r'^product/delete/(?P<pk>\d+)/$', html_views.DeleteProduct.as_view(), name='delete_product'),
     url(r'^product/(?P<pk>\d+)/update/$', html_views.UpdateProduct.as_view(), name='update_product'),
+    url(r'^orders/$', html_views.order_list, name='order_list'),
 ]
